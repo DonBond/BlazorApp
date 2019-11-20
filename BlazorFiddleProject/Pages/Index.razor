@@ -1,0 +1,135 @@
+﻿@page "/"
+@inject IJSRuntime JsRuntime
+
+
+<h1>Don's SPA in Blazor</h1>
+
+<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+<hr>
+<h2>Select your theme</h2>
+<p>Are You A Hero Or A Villain?</p>
+<button type="button" class="btn btn-dark" @onclick="MakeDark">I'm Batman</button>
+<button type="button" class="btn btn-light" @onclick="MakeWhite">I'm Joker</button>
+<br />
+<hr>
+
+<div class="row" id="contentPanel">
+    @foreach (String image in GetImageToShow())
+    {
+        <img src="@image" style="height:150px;margin:5px" />
+    }
+</div>
+<div class="clear" style="margin:15px;">
+    <button class="btn btn-info @DisablePrevious" @onclick="MovePrevious">Prev</button>
+    <button class="btn btn-info @DisableNext" @onclick="MoveNext">Next</button>
+    <span>page: @CurrentPage / @NumberOfPages() </span>
+</div>
+
+
+@code {
+
+    int CurrentPage { get; set; } = 1;
+    int RecordsPerPage = 8;
+
+    void MoveNext()
+    {
+        if (CurrentPage < NumberOfPages())
+        {
+            CurrentPage++;
+        }
+
+    }
+
+    void MovePrevious()
+    {
+        if (CurrentPage > 1)
+        {
+            CurrentPage--;
+        }
+
+    }
+
+    string DisablePrevious
+    {
+        get
+        {
+            if (CurrentPage == 1) { return "disabled"; }
+            return "";
+        }
+    }
+    string DisableNext
+    {
+        get
+        {
+            if (CurrentPage == NumberOfPages()) { return "disabled"; }
+            return "";
+        }
+    }
+
+
+    int NumberOfPages()
+    {
+        return (int)(Math.Ceiling(((double)Images.Count / (double)RecordsPerPage)));
+    }
+
+
+    List<String> GetImageToShow()
+    {
+        int skip = (CurrentPage - 1) * RecordsPerPage;
+
+        return Images.Skip(skip).Take(RecordsPerPage).ToList();
+    }
+
+
+
+    List<String> Images = new List<String>() {
+        "https://thumbs.dreamstime.com/b/pineapple-headphones-wooden-table-horizontal-front-black-background-62166845.jpg",
+         "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSZXCVW0DZEpVzp1uWdwiTv9IyVJM2LjBHgqMGSeSXTymWPPaKg2g&s" ,
+         "https://images.pexels.com/photos/853168/pexels-photo-853168.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500" ,
+         "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT-sZlG6VgOM5DgG6RToxO2PPvZFml3y-L2WGJjxLIfVU4wGAN0yA&s" ,
+         "https://images.unsplash.com/photo-1524293581917-878a6d017c71?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80" ,
+         "https://images.unsplash.com/photo-1504575958497-ccdd586c2997?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1354&q=80" ,
+         "https://cdn3.wpbeginner.com/wp-content/uploads/2016/02/pickupimage.jpg" ,
+         "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT-sZlG6VgOM5DgG6RToxO2PPvZFml3y-L2WGJjxLIfVU4wGAN0yA&s" ,
+         "https://images.unsplash.com/photo-1531219432768-9f540ce91ef3?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80" ,
+         "https://cdn3.wpbeginner.com/wp-content/uploads/2016/02/pickupimage.jpg" ,
+         "https://images.pexels.com/photos/853168/pexels-photo-853168.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500" ,
+         "https://images.unsplash.com/photo-1558981852-426c6c22a060?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80" ,
+         "https://thumbs.dreamstime.com/b/pineapple-headphones-wooden-table-horizontal-front-black-background-62166845.jpg" ,
+         "https://images.unsplash.com/photo-1558981852-426c6c22a060?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80" ,
+         "https://cdn.wallpapersafari.com/95/94/Lni4R7.jpeg" ,
+         "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT-sZlG6VgOM5DgG6RToxO2PPvZFml3y-L2WGJjxLIfVU4wGAN0yA&s" ,
+         "https://images.unsplash.com/photo-1524293581917-878a6d017c71?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80" ,
+         "https://images.unsplash.com/photo-1504575958497-ccdd586c2997?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1354&q=80" ,
+         "https://images.pexels.com/photos/853168/pexels-photo-853168.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500" ,
+         "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT-sZlG6VgOM5DgG6RToxO2PPvZFml3y-L2WGJjxLIfVU4wGAN0yA&s" ,
+         "https://images.unsplash.com/photo-1531219432768-9f540ce91ef3?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80" ,
+         "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT-sZlG6VgOM5DgG6RToxO2PPvZFml3y-L2WGJjxLIfVU4wGAN0yA&s" ,
+         "https://images.pexels.com/photos/853168/pexels-photo-853168.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500" ,
+         "https://cdn3.wpbeginner.com/wp-content/uploads/2016/02/pickupimage.jpg",
+         "https://thumbs.dreamstime.com/b/pineapple-headphones-wooden-table-horizontal-front-black-background-62166845.jpg" ,
+         "https://images.unsplash.com/photo-1558981852-426c6c22a060?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80" ,
+         "https://c.pxhere.com/images/ce/31/63e759baf10362993567bbdc151d-1599514.jpg!s" ,
+         "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT-sZlG6VgOM5DgG6RToxO2PPvZFml3y-L2WGJjxLIfVU4wGAN0yA&s" ,
+         "https://images.unsplash.com/photo-1524293581917-878a6d017c71?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80" ,
+         "https://images.unsplash.com/photo-1504575958497-ccdd586c2997?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1354&q=80" ,
+         "https://images.pexels.com/photos/853168/pexels-photo-853168.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500" ,
+         "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT-sZlG6VgOM5DgG6RToxO2PPvZFml3y-L2WGJjxLIfVU4wGAN0yA&s" ,
+         "https://images.unsplash.com/photo-1531219432768-9f540ce91ef3?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80" ,
+         "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT-sZlG6VgOM5DgG6RToxO2PPvZFml3y-L2WGJjxLIfVU4wGAN0yA&s" ,
+         "https://images.pexels.com/photos/853168/pexels-photo-853168.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500" ,
+         "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSZXCVW0DZEpVzp1uWdwiTv9IyVJM2LjBHgqMGSeSXTymWPPaKg2g&s"
+    };
+
+
+    async Task MakeDark()
+    {
+        await JsRuntime.InvokeVoidAsync(identifier: "switchGray");
+    }
+
+    async Task MakeWhite()
+    {
+        await JsRuntime.InvokeVoidAsync(identifier: "switchWhite");
+    }
+
+}
